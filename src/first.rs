@@ -7,12 +7,6 @@ pub fn first_a() {
     let mut mass: i64;
     let mut fuel_required: i64;
     let mut sum: i64 = 0;
-    /*
-    let mut file = std::fs::File::open("example.txt").unwrap();
-    let mut contents = String::new();
-    file.read_to_string(&mut contents).unwrap();
-    println!("{}", contents);
-    */
 
     let lines = read_file();
     for line in lines {
@@ -24,6 +18,31 @@ pub fn first_a() {
     println!("Sum of the fuel requirements: {}", sum);
 
 }
+
+
+
+pub fn first_b() {
+    let mut mass: i64;
+    let mut fuel_required: i64;
+    let mut sum: i64 = 0;
+
+    let lines = read_file();
+    for line in lines {
+        mass = line.parse::<i64>().unwrap();
+        fuel_required = (mass / 3) - 2;
+        sum += fuel_required;
+        loop {
+            fuel_required = (fuel_required / 3) - 2;
+            if fuel_required <= 0 {
+                break;
+            }
+            sum += fuel_required;
+    }
+
+    }
+    println!("Sum of the fuel requirements: {}", sum);
+}
+
 
 fn read_file() -> Vec<String> {
     let file = File::open("../puzzle_input/input_1.txt").expect("No such file.");
