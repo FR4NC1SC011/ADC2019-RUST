@@ -1,5 +1,6 @@
 mod first;
+mod second;
 
 fn main() {
-    first::first_b();
+    second::second_a();
 }
