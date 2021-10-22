@@ -10,8 +10,9 @@ import (
 )
 
 type Coordinates struct {
-	x int
-	y int
+	x     int
+	y     int
+	steps int
 }
 
 var wire1 []Coordinates
@@ -29,13 +30,14 @@ func main() {
 	intersect_points := intersection(wire1, wire2)
 	// fmt.Println(intersect_points)
 
-	findMinimumDistance(intersect_points, Coordinates{0, 0})
+	findMinimumDistance(intersect_points, Coordinates{0, 0, 0})
 
 }
 
 func wire_path(wire string) []Coordinates {
 	x := 0
 	y := 0
+	steps := 0
 
 	var path []Coordinates
 
@@ -48,22 +50,26 @@ func wire_path(wire string) []Coordinates {
 		case "R":
 			for j := 0; j < c; j++ {
 				x++
-				path = append(path, Coordinates{x, y})
+				steps++
+				path = append(path, Coordinates{x, y, steps})
 			}
 		case "L":
 			for j := 0; j < c; j++ {
 				x--
-				path = append(path, Coordinates{x, y})
+				steps++
+				path = append(path, Coordinates{x, y, steps})
 			}
 		case "U":
 			for j := 0; j < c; j++ {
 				y++
-				path = append(path, Coordinates{x, y})
+				steps++
+				path = append(path, Coordinates{x, y, steps})
 			}
 		case "D":
 			for j := 0; j < c; j++ {
 				y--
-				path = append(path, Coordinates{x, y})
+				steps++
+				path = append(path, Coordinates{x, y, steps})
 			}
 		}
 	}
@@ -72,15 +78,22 @@ func wire_path(wire string) []Coordinates {
 
 func intersection(wire1 []Coordinates, wire2 []Coordinates) []Coordinates {
 	var intersect_points []Coordinates
+	total_steps := 0
+	min_steps := math.MaxInt64
 
 	for _, v := range wire1 {
 		for _, w := range wire2 {
 			if v.x == w.x && v.y == w.y {
 				intersect_points = append(intersect_points, v)
+				total_steps = v.steps + w.steps
+				if total_steps < min_steps {
+					min_steps = total_steps
+				}
+
 			}
 		}
 	}
-
+	log.Println("Min. Steps:", min_steps)
 	return intersect_points
 }
 
